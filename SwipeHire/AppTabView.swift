@@ -1,6 +1,7 @@
 import SwiftUI
 
 struct AppTabView: View {
+    var viewModel = AppViewModel()
     var body: some View {
         TabView {
             Tab("Profile", systemImage: "person.crop.circle.fill") {
@@ -9,7 +10,7 @@ struct AppTabView: View {
 
 
             Tab("Home", systemImage: "house.fill") {
-                HomeView()
+                HomeView(viewModel: viewModel)
             }
 
 
