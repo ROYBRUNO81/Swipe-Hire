@@ -11,9 +11,14 @@ struct Job: Hashable{
     let deadine: Date
     let fit: Float
     let skills: [Image]
+    var status: Bool = true
     
     func hash(into hasher: inout Hasher) {
         hasher.combine(name)
+    }
+    
+    mutating func toggleSaved() {
+        status = !status
     }
 }
 

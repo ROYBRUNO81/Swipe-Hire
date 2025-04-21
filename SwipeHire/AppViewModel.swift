@@ -74,8 +74,6 @@ import SwiftUI
         )
     ]
     
-    var collectedHalls: Set<String> = []
-
-
+    var profile: Profile = Profile()
 
 }

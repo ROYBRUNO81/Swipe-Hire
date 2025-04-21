@@ -7,7 +7,7 @@ struct CardView: View {
 
     var body: some View {
         ZStack {
-            //Card background
+
             RoundedRectangle(cornerRadius: 20)
                 .fill(
                     LinearGradient(
@@ -49,7 +49,7 @@ struct CardView: View {
                     .foregroundColor(.white.opacity(0.3))
                     .padding(.vertical, 5)
 
-                // Description section
+
                 Text("Description")
                     .font(.system(size: 16, weight: .semibold))
                     .foregroundColor(.white.opacity(0.8))
@@ -60,7 +60,6 @@ struct CardView: View {
                     .lineSpacing(4)
 
 
-                // Skills
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Skills Required")
                         .font(.system(size: 16, weight: .semibold))
@@ -116,7 +115,7 @@ struct CardView: View {
                 }
 
                 Button(action: {
-                    // Apply action
+                    //TODO: Add navigation to jobdetail
                 }) {
                     Text("Apply Now")
                         .font(.system(size: 18, weight: .semibold))
