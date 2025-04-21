@@ -11,11 +11,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		ABA4EA982DB6F5C600732E2E /* Views */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = Views;
-			sourceTree = "<group>";
-		};
 		CB0F025E2DB55E6800F5479B /* SwipeHire */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = SwipeHire;
@@ -39,7 +34,6 @@
 			children = (
 				CB0F025E2DB55E6800F5479B /* SwipeHire */,
 				CB0F025D2DB55E6800F5479B /* Products */,
-				ABA4EA982DB6F5C600732E2E /* Views */,
 			);
 			sourceTree = "<group>";
 		};
@@ -67,7 +61,6 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				ABA4EA982DB6F5C600732E2E /* Views */,
 				CB0F025E2DB55E6800F5479B /* SwipeHire */,
 			);
 			name = SwipeHire;
