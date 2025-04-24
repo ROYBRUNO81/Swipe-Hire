@@ -1,25 +1,29 @@
-import Foundation
-import SwiftUI
-import CoreLocation
+import Foundation    
 
-struct Job: Hashable{
-    let name: String
+/// Core data model for a SwipeHire job card.
+struct Job: Identifiable, Codable, Hashable, Equatable {
+
+    // MARK: – Identity
+    let id: Foundation.UUID = .init()
+
+    // MARK: – Display fields
+    let name:        String
     let description: String
-    let company: String
-    let image: Image
-    let datePosted: Date
-    let deadine: Date
-    let fit: Float
-    let skills: [Image]
-    var status: Bool = true
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(name)
-    }
-    
-    mutating func toggleSaved() {
-        status = !status
+    let company:     String
+    let imageName:   String
+    let datePosted:  Foundation.Date
+    let deadline:    Foundation.Date
+    let fit:         Float
+    let skills:      [String]
+
+    // MARK: – Per-user flags
+    var isSaved:   Bool = false
+    var isApplied: Bool = false
+
+    // MARK: – CodingKeys (explicit → compiler never guesses)
+    private enum CodingKeys: String, CodingKey {
+        case id, name, description, company,
+             imageName, datePosted, deadline,
+             fit, skills, isSaved, isApplied
     }
 }
-
-

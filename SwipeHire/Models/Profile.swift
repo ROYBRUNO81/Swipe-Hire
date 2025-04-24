@@ -64,4 +64,43 @@ struct Profile {
 
 }
 
+extension Profile: Codable {
 
+    enum CodingKeys: String, CodingKey {
+        case firstName, lastName, about, email,
+             schools, experiences, experienceDescriptions
+    }
+
+    init(from decoder: Decoder) throws {
+        let c = try decoder.container(keyedBy: CodingKeys.self)
+
+        // strings
+        firstName  = try c.decode(String.self , forKey: .firstName)
+        lastName   = try c.decode(String.self , forKey: .lastName)
+        about      = try c.decode(String.self , forKey: .about)
+        email      = try c.decode(String.self , forKey: .email)
+
+        // arrays of strings
+        schools               = try c.decode([String].self , forKey: .schools)
+        experiences           = try c.decode([String].self , forKey: .experiences)
+        experienceDescriptions = try c.decode([String].self , forKey: .experienceDescriptions)
+
+        // images
+        profileImage = Image(systemName: "person.fill")
+        bannerImage  = Image("banner")
+        skills       = [Image(systemName: "person.fill.questionmark")]
+    }
+
+    func encode(to encoder: Encoder) throws {
+        var c = encoder.container(keyedBy: CodingKeys.self)
+
+        try c.encode(firstName , forKey: .firstName)
+        try c.encode(lastName  , forKey: .lastName)
+        try c.encode(about     , forKey: .about)
+        try c.encode(email     , forKey: .email)
+
+        try c.encode(schools              , forKey: .schools)
+        try c.encode(experiences          , forKey: .experiences)
+        try c.encode(experienceDescriptions, forKey: .experienceDescriptions)
+    }
+}

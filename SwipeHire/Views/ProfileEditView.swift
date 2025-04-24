@@ -267,7 +267,7 @@ struct ProfileEditView: View {
                     editedProfile.editName(first: firstName, last: lastName)
                     editedProfile.editAbout(about)
                     editedProfile.editEmail(email)
-                    viewModel.profile = editedProfile
+                    viewModel.updateProfile(editedProfile)
                     presentationMode.wrappedValue.dismiss()
                 }
                 .foregroundColor(.blue)
