@@ -13,6 +13,9 @@ struct Profile {
     var schools: [String] = ["Upenn"]
     var experiences: [String] = ["Senior Prompt Engineer"]
     var experienceDescriptions: [String] = ["Code this app for me"]
+    var city: String = ""
+    var state: String = ""
+    var country: String = ""
     
     mutating func addSkill(_ skill: Image) {
         skills.append(skill)
@@ -69,6 +72,7 @@ extension Profile: Codable {
     enum CodingKeys: String, CodingKey {
         case firstName, lastName, about, email,
              schools, experiences, experienceDescriptions
+        case city, state, country
     }
 
     init(from decoder: Decoder) throws {
@@ -89,6 +93,11 @@ extension Profile: Codable {
         profileImage = Image(systemName: "person.fill")
         bannerImage  = Image("banner")
         skills       = [Image(systemName: "person.fill.questionmark")]
+        
+        // location
+        city    = try c.decodeIfPresent(String.self, forKey: .city) ?? ""
+        state   = try c.decodeIfPresent(String.self, forKey: .state) ?? ""
+        country = try c.decodeIfPresent(String.self, forKey: .country) ?? ""
     }
 
     func encode(to encoder: Encoder) throws {
@@ -102,5 +111,9 @@ extension Profile: Codable {
         try c.encode(schools              , forKey: .schools)
         try c.encode(experiences          , forKey: .experiences)
         try c.encode(experienceDescriptions, forKey: .experienceDescriptions)
+        
+        try c.encode(city,    forKey: .city)
+        try c.encode(state,   forKey: .state)
+        try c.encode(country, forKey: .country)
     }
 }
