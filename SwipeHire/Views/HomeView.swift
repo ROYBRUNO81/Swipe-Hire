@@ -12,7 +12,7 @@ struct HomeView: View {
                 VStack(spacing: 0) {
                     // Search & filter controls above the cards
                     SearchView(viewModel: viewModel)
-                        .padding(.vertical, 14)
+                        .padding(.vertical, 12)
                     ZStack {
 
                         // use filteredJobs instead of allJobs

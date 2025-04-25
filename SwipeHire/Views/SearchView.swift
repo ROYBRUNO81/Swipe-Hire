@@ -20,13 +20,13 @@ struct SearchView: View {
                 .foregroundColor(.black)
 
             Button("OK") {
-                // No action yet
+                viewModel.applyFilters(query: query, stateOnly: filterStateOnly)
             }
             .buttonStyle(.bordered)
 
             Button {
                 filterStateOnly.toggle()
-                viewModel.applyLocationFilter(stateOnly: filterStateOnly)
+                viewModel.applyFilters(query: query, stateOnly: filterStateOnly)
             } label: {
                 Image(systemName: filterStateOnly ? "mappin" : "mappin.circle")
             }

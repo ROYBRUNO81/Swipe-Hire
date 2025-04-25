@@ -14,7 +14,7 @@ class AppViewModel: ObservableObject {
         loadProfile()
         
         locationManager.requestLocationIfNeeded(currentCity: profile.city)
-        applyLocationFilter(stateOnly: false)
+        applyFilters(query: "", stateOnly: false)
                 
         // listen for updates and write them into profile + disk
         Publishers
@@ -30,19 +30,29 @@ class AppViewModel: ObservableObject {
             self.profile.state   = state
             self.profile.country = country
             self.saveProfile()
-            self.applyLocationFilter(stateOnly: false)
+            self.applyFilters(query: "", stateOnly: false)
           }
           .store(in: &cancellables)
 
     }
     
-    /// Filters jobs by user country or state
-    func applyLocationFilter(stateOnly: Bool) {
+    /// Search query + location filter
+    func applyFilters(query: String, stateOnly: Bool) {
         let user = profile
+        // first filter by location
+        let byLocation: [Job]
         if stateOnly {
-            filteredJobs = jobService.allJobs.filter { $0.state == user.state }
+            byLocation = jobService.allJobs.filter { $0.state   == user.state }
         } else {
-            filteredJobs = jobService.allJobs.filter { $0.country == user.country }
+            byLocation = jobService.allJobs.filter { $0.country == user.country }
+        }
+
+        // then filter by search query on job.name
+        if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            filteredJobs = byLocation
+        } else {
+            let lower = query.lowercased()
+            filteredJobs = byLocation.filter { $0.name.lowercased().contains(lower) }
         }
     }
 
