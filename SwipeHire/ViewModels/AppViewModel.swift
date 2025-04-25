@@ -1,12 +1,49 @@
 import SwiftUI
+import Combine
 
 @MainActor
 class AppViewModel: ObservableObject {
     @Published var jobService = JobDataService()
     @Published var profile: Profile = Profile()
+    @Published var filteredJobs: [Job] = []
+    
+    let locationManager = LocationManager()
+    private var cancellables = Set<AnyCancellable>()
     
     init() {
         loadProfile()
+        
+        locationManager.requestLocationIfNeeded(currentCity: profile.city)
+        applyLocationFilter(stateOnly: false)
+                
+        // listen for updates and write them into profile + disk
+        Publishers
+          .CombineLatest3(
+            locationManager.$city,
+            locationManager.$state,
+            locationManager.$country
+          )
+          .filter { !$0.0.isEmpty && !$0.1.isEmpty && !$0.2.isEmpty }
+          .sink { [weak self] city, state, country in
+            guard let self = self else { return }
+            self.profile.city    = city
+            self.profile.state   = state
+            self.profile.country = country
+            self.saveProfile()
+            self.applyLocationFilter(stateOnly: false)
+          }
+          .store(in: &cancellables)
+
+    }
+    
+    /// Filters jobs by user country or state
+    func applyLocationFilter(stateOnly: Bool) {
+        let user = profile
+        if stateOnly {
+            filteredJobs = jobService.allJobs.filter { $0.state == user.state }
+        } else {
+            filteredJobs = jobService.allJobs.filter { $0.country == user.country }
+        }
     }
 
     // Accessors
@@ -43,8 +80,12 @@ class AppViewModel: ObservableObject {
 
     /// one write API for app
     func updateProfile(_ p: Profile) {
-        profile = p
-        if let data = try? JSONEncoder().encode(p) {
+            profile = p
+            saveProfile()
+    }
+    
+    private func saveProfile() {
+        if let data = try? JSONEncoder().encode(profile) {
             try? data.write(to: profileURL)
         }
     }

@@ -177,6 +177,24 @@ struct ProfileView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
+                        
+                        // location
+                        if !viewModel.profile.city.isEmpty || !viewModel.profile.state.isEmpty || !viewModel.profile.country.isEmpty {
+                            ProfileCardView(title: "Location") {
+                                HStack(alignment: .center, spacing: 8) {
+                                    Image(systemName: "mappin.and.ellipse")
+                                        .foregroundColor(.blue)
+                                    Text([viewModel.profile.city, viewModel.profile.state, viewModel.profile.country]
+                                            .filter { !$0.isEmpty }
+                                            .joined(separator: ", "))
+                                        .font(.body)
+                                        .foregroundColor(.white)
+                                }
+                                .padding(.horizontal, 4)
+                                .frame(maxWidth: .infinity, alignment: .leading)
+                            }
+                        }
+                        
                     }
                     .padding(.horizontal)
                 }

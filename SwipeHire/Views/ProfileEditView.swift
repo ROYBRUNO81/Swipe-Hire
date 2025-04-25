@@ -17,6 +17,9 @@ struct ProfileEditView: View {
     @State private var newExperience = ""
     @State private var newExperienceDescription = ""
     @State private var selectedSkillIcon = 0
+    @State private var city: String
+    @State private var state: String
+    @State private var country: String
     
     // Available skill icons
     let skillIcons = [
@@ -32,6 +35,9 @@ struct ProfileEditView: View {
         _lastName = State(initialValue: viewModel.profile.lastName)
         _about = State(initialValue: viewModel.profile.about)
         _email = State(initialValue: viewModel.profile.email)
+        _city    = State(initialValue: viewModel.profile.city)
+        _state   = State(initialValue: viewModel.profile.state)
+        _country = State(initialValue: viewModel.profile.country)
     }
     
     var body: some View {
@@ -242,6 +248,12 @@ struct ProfileEditView: View {
                             }
                         }
                     }
+                    
+                    EditSectionView(title: "Location") {
+                      EditFieldView(title: "City",    text: $city)
+                      EditFieldView(title: "State",   text: $state)
+                      EditFieldView(title: "Country", text: $country)
+                    }
                 }
                 .padding(.horizontal, 80)
                 .padding(.bottom, 40)
@@ -267,6 +279,9 @@ struct ProfileEditView: View {
                     editedProfile.editName(first: firstName, last: lastName)
                     editedProfile.editAbout(about)
                     editedProfile.editEmail(email)
+                    editedProfile.city    = city
+                    editedProfile.state   = state
+                    editedProfile.country = country
                     viewModel.updateProfile(editedProfile)
                     presentationMode.wrappedValue.dismiss()
                 }

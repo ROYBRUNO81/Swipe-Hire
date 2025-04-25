@@ -22,6 +22,15 @@ struct JobDetailView: View {
                     .font(.body)
                     .foregroundColor(.white)
                     .lineSpacing(4)
+                
+                HStack {
+                    Image(systemName: "mappin.and.ellipse")
+                      .foregroundColor(.blue)
+                    Text("\(job.city), \(job.state), \(job.country)")
+                      .foregroundColor(.white)
+                      .font(.subheadline)
+                  }
+                  .padding(.bottom, 12)
 
                 skillsSection
                 datesSection
@@ -175,7 +184,10 @@ struct JobDetailView: View {
                 datePosted:  Date(),
                 deadline:    Calendar.current.date(byAdding: .day, value: 14, to: Date())!,
                 fit:         0.8,
-                skills:      ["swift", "hammer.fill", "rectangle.3.offgrid.bubble.left"]
+                skills:      ["swift", "hammer.fill", "rectangle.3.offgrid.bubble.left"],
+                city: "Pittsburgh",
+                state: "Pennsylvania",
+                country: "United States"
             )
         )
     }

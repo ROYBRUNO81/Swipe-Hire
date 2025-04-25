@@ -15,6 +15,9 @@ struct Job: Identifiable, Codable, Hashable, Equatable {
     let deadline:    Foundation.Date
     let fit:         Float
     let skills:      [String]
+    let city: String
+    let state: String
+    let country: String
 
     // MARK: – Per-user flags
     var isSaved:   Bool = false
@@ -24,6 +27,6 @@ struct Job: Identifiable, Codable, Hashable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, name, description, company,
              imageName, datePosted, deadline,
-             fit, skills, isSaved, isApplied
+             fit, skills, isSaved, isApplied, city, state, country
     }
 }

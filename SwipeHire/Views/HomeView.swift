@@ -6,20 +6,27 @@ struct HomeView: View {
 
     var body: some View {
         NavigationStack {
-            ZStack {
+            ZStack{
                 background
+                
+                VStack(spacing: 0) {
+                    // Search & filter controls above the cards
+                    SearchView(viewModel: viewModel)
+                        .padding(.vertical, 14)
+                    ZStack {
 
-                // swipe stack
-                ForEach(viewModel.jobService.allJobs) { job in
-                    CardView(job: job)
-                        .zIndex(Double(job.fit))
-                        .onTapGesture {
-                            selected = job
+                        // use filteredJobs instead of allJobs
+                        ForEach(viewModel.filteredJobs) { job in
+                            CardView(job: job)
+                                .zIndex(Double(job.fit))
+                                .onTapGesture {
+                                    selected = job
+                                }
                         }
+                    }
                 }
             }
-            .navigationTitle("Your Job Matches")
-            // one destination for the whole stack
+            .navigationTitle("Your Job Match")
             .navigationDestination(item: $selected) { job in
                 JobDetailView(viewModel: viewModel, job: job)
             }

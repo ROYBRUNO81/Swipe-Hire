@@ -12,7 +12,7 @@ struct CardView: View {
             cardBackground
             cardContent
         }
-        .frame(width: 350, height: 600)
+        .frame(width: 350, height: 570)
         .offset(x: offset.width, y: offset.height * 0.4)
         .rotationEffect(.degrees(Double(offset.width / 25)))
         .gesture(
@@ -49,6 +49,9 @@ struct CardView: View {
             header
             Divider().background(Color.white.opacity(0.3))
             descriptionSection
+            Text("\(job.city), \(job.state), \(job.country)")
+              .font(.footnote)
+              .foregroundColor(.white.opacity(0.7))
             skillsSection
             datesSection
             matchBarSection
@@ -218,6 +221,9 @@ struct DateInfoRow: View {
         datePosted:  Date(),
         deadline:    Calendar.current.date(byAdding: .day, value: 14, to: Date())!,
         fit:         0.75,
-        skills:      ["swift", "hammer.fill", "rectangle.3.offgrid.bubble.left"]
+        skills:      ["swift", "hammer.fill", "rectangle.3.offgrid.bubble.left"],
+        city: "Pittsburgh",
+        state: "Pennsylvania",
+        country: "United States"
     ))
 }

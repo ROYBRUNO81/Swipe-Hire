@@ -20,6 +20,10 @@ struct AppTabView: View {
         TabView {
             Tab("Profile", systemImage: "person.crop.circle.fill") {
                 ProfileView(viewModel: viewModel)
+                    .onAppear {
+                              // ensure the location request fires
+                              viewModel.locationManager.requestLocationIfNeeded(currentCity: viewModel.profile.city)
+                            }
             }
 
 

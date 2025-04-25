@@ -11,7 +11,10 @@ struct MockJobData {
             datePosted: Date(),
             deadline: Calendar.current.date(byAdding: .day, value: 14, to: Date())!,
             fit: 0.85,
-            skills: ["swift", "combine", "uikit"]
+            skills: ["swift", "combine", "uikit"],
+            city: "San Diego",
+            state: "California",
+            country: "United States"
         ),
         Job(
             name: "UX Designer",
@@ -21,7 +24,10 @@ struct MockJobData {
             datePosted: Calendar.current.date(byAdding: .day, value: -3, to: Date())!,
             deadline: Calendar.current.date(byAdding: .day, value: 10, to: Date())!,
             fit: 0.78,
-            skills: ["figma", "sketch", "prototyping"]
+            skills: ["figma", "sketch", "prototyping"],
+            city: "Pittsburgh",
+            state: "Pennsylvania",
+            country: "United States"
         ),
         Job(
             name: "Data Scientist",
@@ -31,7 +37,10 @@ struct MockJobData {
             datePosted: Calendar.current.date(byAdding: .day, value: -5, to: Date())!,
             deadline: Calendar.current.date(byAdding: .day, value: 20, to: Date())!,
             fit: 0.91,
-            skills: ["python", "pandas", "tensorflow"]
+            skills: ["python", "pandas", "tensorflow"],
+            city: "Philadelphia",
+            state: "Pennsylvania",
+            country: "United States"
         )
     ]
 }
