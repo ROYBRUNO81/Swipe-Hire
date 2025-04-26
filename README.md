@@ -18,7 +18,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 1. **Clone the repo**:
    ```bash
-   git clone https://github.com/yourusername/SwipeHire.git
+   git clone https://github.com/aniakula/Swipe-Hire.git
    ```
 2. **Open in Xcode 15+**:
    - Double-click `SwipeHire.xcodeproj`.
@@ -30,9 +30,17 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 ## 🛠️ How It Works
 
 1. **Home Feed**: Swipe right to bookmark a job, swipe left to skip it.
+
+<img src="./home.png" alt="App Screenshot" width="300" height="550"/>
+
 2. **Search & Filter**: Tap the search bar to find specific titles or locations. Use the pin icon to switch between state-only and country-wide listings.
 3. **Saved & Applied**: Head to the **Saved** tab to revisit bookmarks or mark jobs as applied.
+
+<img src="./saved.png" alt="App Screenshot" width="300" height="550"/>
+
 4. **Edit Profile**: Open **Profile**, tap **Edit**, and tweak your personal info—your Fit Scores will adjust instantly.
+   
+<img src="./profile.png" alt="App Screenshot" width="300" height="550"/>
 
 ---
 
@@ -40,7 +48,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 Want to see SwipeHire in action? Check out this quick demo:
 
-<video src="./demo/SwipeHireDemo.mp4" controls width="320">
+<video src="./swipehiredemo.MP4" controls width="320">
 Your browser doesn’t support video. You can find the demo in `demo/SwipeHireDemo.mp4`.
 </video>
 
@@ -52,22 +60,4 @@ Your browser doesn’t support video. You can find the demo in `demo/SwipeHireDe
 - **SwiftUI**: Declarative views for rapid UI updates.
 - **CoreLocation**: Geo‑tagged job filtering based on your current city/state.
 - **Local Storage**: JSON persistence for profiles and saved/apply status.
-
----
-
-## 🌱 What’s Next?
-
-SwipeHire’s foundation is solid, but there’s room to grow:
-
-- Integrate resume uploads and in-app applications
-- Allow custom or remote locations
-- Add sorting by deadline or date posted
-- Enhance accessibility and support dark mode
-- Build a suite of unit/UI tests for reliability
-
----
-
-## 📄 License
-
-SwipeHire is open-sourced under the MIT License. See [LICENSE.md](LICENSE.md) for the full terms.
 
