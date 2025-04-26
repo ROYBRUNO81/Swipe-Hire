@@ -157,6 +157,11 @@ struct ProfileEditView: View {
                                         .padding(.horizontal, 12)
                                         .background(Color.blue.opacity(0.3))
                                         .cornerRadius(12)
+                                        .onTapGesture {
+                                            if let idx = editedProfile.skills.firstIndex(of: skill) {
+                                                editedProfile.removeSkill(at: idx)
+                                            }
+                                        }
                                 }
                             }
 
