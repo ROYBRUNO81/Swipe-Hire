@@ -31,7 +31,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 1. **Home Feed**: Swipe right to bookmark a job, swipe left to skip it.
 
-<img src="./home.png" alt="App Screenshot" width="300" height="550"/>
+<img src="home.png" alt="App Screenshot" width="300" height="550"/>
 
 2. **Search & Filter**: Tap the search bar to find specific titles or locations. Use the pin icon to switch between state-only and country-wide listings.
 3. **Saved & Applied**: Head to the **Saved** tab to revisit bookmarks or mark jobs as applied.
@@ -40,7 +40,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 4. **Edit Profile**: Open **Profile**, tap **Edit**, and tweak your personal info—your Fit Scores will adjust instantly.
    
-<img src="./profile.png" alt="App Screenshot" width="300" height="550"/>
+<img src="profile.png" alt="App Screenshot" width="300" height="550"/>
 
 ---
 
@@ -48,7 +48,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 Want to see SwipeHire in action? Check out this quick demo:
 
-<video src="./swipehiredemo.MP4" controls width="320">
+<video src="swipehiredemo.MP4" controls width="320">
 Your browser doesn’t support video. You can find the demo in `demo/SwipeHireDemo.mp4`.
 </video>
 
