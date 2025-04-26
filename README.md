@@ -48,7 +48,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 Want to see SwipeHire in action? Check out this quick demo:
 
-[▶️ Watch the SwipeHire demo video](.swipehiredemo.MP4)
+[▶️ Watch the SwipeHire demo video]([.swipehiredemo.MP4](https://github.com/aniakula/Swipe-Hire/raw/refs/heads/main/swipehiredemo.MP4))
 </video>
 
 ---
