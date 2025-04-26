@@ -48,7 +48,7 @@ Welcome to **SwipeHire**, your pocket-sized job-hunting companion. Built with Sw
 
 Want to see SwipeHire in action? Check out this quick demo:
 
-<video src="swipehiredemo.MP4" controls width="320">
+<video src="./swipehiredemo.MP4" controls width="320">
 Your browser doesn’t support video. You can find the demo in `demo/SwipeHireDemo.mp4`.
 </video>
 
