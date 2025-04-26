@@ -9,7 +9,6 @@ struct SavedJobsView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                // ─── Usual gradient background ────────────────────────────
                 LinearGradient(
                     colors: [
                         Color(red: 0.05, green: 0.10, blue: 0.20),
@@ -20,7 +19,7 @@ struct SavedJobsView: View {
                 )
                 .ignoresSafeArea()
 
-                // ─── If there are no saved/applied jobs, just show background (optionally placeholder) ───
+                // If no saved/applied jobs, just show background
                 if savedOnly.isEmpty && appliedOnly.isEmpty {
                     VStack {
                         Image(systemName: "bookmark.slash")
@@ -32,7 +31,7 @@ struct SavedJobsView: View {
                             .foregroundColor(.white.opacity(0.7))
                     }
                 }
-                // ─── Otherwise render your Saved & Applied sections ────────────────────────────────────
+                // render your Saved & Applied sections
                 else {
                     ScrollView {
                         VStack(spacing: 24) {

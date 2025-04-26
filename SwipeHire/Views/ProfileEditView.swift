@@ -285,7 +285,7 @@ struct ProfileEditView: View {
                         .ignoresSafeArea()
 
                         VStack(spacing: 16) {
-                            // 1. Existing skill pills
+                            // Existing skill pills
                             FlowLayout(spacing: 8) {
                                 ForEach(editedProfile.skills, id: \.self) { skill in
                                     Text(skill)
@@ -299,7 +299,7 @@ struct ProfileEditView: View {
                             }
                             .padding()
 
-                            // 2. Entry + OK to append
+                            // Entry + OK to append
                             HStack {
                                 TextField("Enter a skill", text: $newSkillText)
                                     .textFieldStyle(.roundedBorder)

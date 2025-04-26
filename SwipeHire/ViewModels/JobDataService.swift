@@ -62,12 +62,12 @@ class JobDataService: ObservableObject {
        var j = job
        j.isSaved   = true
        j.isApplied = true
-       // 1) mirror flags in allJobs
+       // mirror flags in allJobs
        if let idxAll = allJobs.firstIndex(where: { $0.id == j.id }) {
            allJobs[idxAll].isSaved   = true
            allJobs[idxAll].isApplied = true
        }
-       // 2) then update savedJobs
+       // update savedJobs
        if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
            savedJobs[idx] = j
        } else {

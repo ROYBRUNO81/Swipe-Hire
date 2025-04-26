@@ -10,7 +10,7 @@ struct HomeView: View {
                 background
                 
                 VStack(spacing: 0) {
-                    // Search & filter controls above the cards
+                    // Search & filter controls
                     SearchView(viewModel: _viewModel)
                         .padding(.vertical, 12)
                     
@@ -27,13 +27,12 @@ struct HomeView: View {
                         }
                         .allowsHitTesting(false)
 
-                        // use filteredJobs instead of allJobs
                         ForEach(
                           viewModel.filteredJobs
                             .filter { !$0.isSaved && !$0.isApplied }
                         ) { job in
                             CardView(job: job)
-                                // keep your dynamic zIndex by fit
+                                // keep dynamic zIndex by fit
                                 .zIndex(Double(viewModel.fit(for: job)))
                                 .onTapGesture {
                                     selected = job

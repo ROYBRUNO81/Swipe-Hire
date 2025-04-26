@@ -52,17 +52,20 @@ class AppViewModel: ObservableObject {
             byLocation = jobService.allJobs.filter { $0.country.lowercased() == user.country.lowercased() }
         }
 
-        // then filter by search query on job.name
+        // filter by search query
         let afterSearch: [Job]
         if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
             afterSearch = byLocation
         } else {
             let lower = query.lowercased()
-            afterSearch = byLocation.filter { $0.name.lowercased().contains(lower) }
+            afterSearch = byLocation.filter { $0.name.lowercased().contains(lower) || $0.state.lowercased() == lower || $0.city.lowercased() == lower }
         }
         
         // drop any saved or applied jobs
-        filteredJobs = afterSearch.filter { !($0.isSaved || $0.isApplied) }
+        let unsaved = afterSearch.filter { !($0.isSaved || $0.isApplied) }
+        
+        // sort by fit descending
+        filteredJobs = unsaved.sorted { fit(for: $0) > fit(for: $1) }
     }
     
     // Returns the fraction of this job’s skills that the user has.

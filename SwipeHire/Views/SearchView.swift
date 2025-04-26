@@ -20,7 +20,8 @@ struct SearchView: View {
                 .foregroundColor(.black)
 
             Button("OK") {
-                viewModel.applyFilters(query: query, stateOnly: filterStateOnly)
+                let trimmed = query.trimmingCharacters(in: .whitespacesAndNewlines)
+                viewModel.applyFilters(query: trimmed, stateOnly: filterStateOnly)
             }
             .buttonStyle(.bordered)
 
