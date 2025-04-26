@@ -159,9 +159,9 @@ struct CardView: View {
 
     private var applyButton: some View {
         Button {
-            // TODO: navigate to JobDetailView
+            viewModel.apply(job)
         } label: {
-            Text("Apply Now")
+            Text(job.isApplied ? "Applied" : "Apply Now")
                 .font(.system(size: 18, weight: .semibold))
                 .foregroundColor(color)
                 .frame(maxWidth: .infinity)
@@ -171,6 +171,8 @@ struct CardView: View {
                         .fill(Color.white)
                 )
         }
+        .disabled(job.isApplied)
+        .opacity(job.isApplied ? 0.6 : 1)
         .padding(.top, 10)
     }
 
@@ -233,4 +235,5 @@ struct DateInfoRow: View {
         state: "Pennsylvania",
         country: "United States"
     ))
+    .environmentObject(AppViewModel())
 }

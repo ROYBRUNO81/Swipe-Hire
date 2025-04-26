@@ -35,31 +35,46 @@ class JobDataService: ObservableObject {
 
         // populate home feed with mock job data (for now)
         allJobs = MockJobData.sampleJobs
+        
+        for saved in savedJobs {
+            if let idx = allJobs.firstIndex(where: { $0.id == saved.id }) {
+                allJobs[idx].isSaved   = saved.isSaved   
+                allJobs[idx].isApplied = saved.isApplied
+            }
+        }
     }
 
     func saveJob(_ job: Job) {
-        var j = job
-        j.isSaved = true
-        // if already present, update its flags; otherwise append
-        if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
-            savedJobs[idx].isSaved   = true
-            savedJobs[idx].isApplied = j.isApplied
-        } else {
-            savedJobs.append(j)
-        }
-        saveToDisk()
+       var j = job
+       j.isSaved = true
+       if let idxAll = allJobs.firstIndex(where: { $0.id == j.id }) {
+           allJobs[idxAll].isSaved = true
+       }
+       if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
+           savedJobs[idx].isSaved   = true
+           savedJobs[idx].isApplied = j.isApplied
+       } else {
+           savedJobs.append(j)
+       }
+       saveToDisk()
     }
     
     func applyJob(_ job: Job) {
-        var j = job
-        j.isSaved   = true
-        j.isApplied = true
-        if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
-            savedJobs[idx] = j
-        } else {
-            savedJobs.append(j)
-        }
-        saveToDisk()
+       var j = job
+       j.isSaved   = true
+       j.isApplied = true
+       // 1) mirror flags in allJobs
+       if let idxAll = allJobs.firstIndex(where: { $0.id == j.id }) {
+           allJobs[idxAll].isSaved   = true
+           allJobs[idxAll].isApplied = true
+       }
+       // 2) then update savedJobs
+       if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
+           savedJobs[idx] = j
+       } else {
+           savedJobs.append(j)
+       }
+       saveToDisk()
     }
 
     func unsaveJob(_ job: Job) {

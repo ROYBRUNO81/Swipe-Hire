@@ -147,9 +147,8 @@ struct JobDetailView: View {
 
     private var applyButton: some View {
         Button {
+            viewModel.apply(job)
             job.isApplied = true
-            viewModel.jobService.saveJob(job)   // or custom apply logic
-            dismiss()
         } label: {
             Text(job.isApplied ? "Applied" : "Apply Now")
                 .font(.headline)
@@ -192,5 +191,6 @@ struct JobDetailView: View {
             )
         )
     }
+    .environmentObject(AppViewModel())
 }
 

@@ -55,8 +55,6 @@ struct SavedJobsView: View {
                                             Button {
                                                 viewModel.toggleSaved(job)
                                             } label: {
-                                                Image(systemName: "bookmark.fill")
-                                                    .foregroundColor(.yellow)
                                             }
                                         }
                                         .padding(.horizontal)

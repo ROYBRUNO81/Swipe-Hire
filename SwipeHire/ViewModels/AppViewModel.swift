@@ -7,6 +7,9 @@ class AppViewModel: ObservableObject {
     @Published var profile: Profile = Profile()
     @Published var filteredJobs: [Job] = []
     
+    private var lastQuery     = ""
+    private var lastStateOnly = false
+    
     let locationManager = LocationManager()
     private var cancellables = Set<AnyCancellable>()
     
@@ -38,6 +41,8 @@ class AppViewModel: ObservableObject {
     
     // Search query + location filter
     func applyFilters(query: String, stateOnly: Bool) {
+        lastQuery     = query
+        lastStateOnly = stateOnly
         let user = profile
         // first filter by location
         let byLocation: [Job]
@@ -59,8 +64,8 @@ class AppViewModel: ObservableObject {
     // Returns the fraction of this job’s skills that the user has.
     func fit(for job: Job) -> Float {
         guard !job.skills.isEmpty else { return 0 }
-        let user  = Set(profile.skills)
-        let need  = Set(job.skills)
+        let user = Set(profile.skills.map { $0.lowercased() })
+        let need = Set(job.skills.map    { $0.lowercased() })
         let match = user.intersection(need).count
         return Float(match) / Float(job.skills.count)
     }
@@ -68,14 +73,17 @@ class AppViewModel: ObservableObject {
     // Accessors
     func save(_ job: Job) {
         jobService.saveJob(job)
+        applyFilters(query: lastQuery, stateOnly: lastStateOnly)
     }
 
     func apply(_ job: Job) {
         jobService.applyJob(job)
+        applyFilters(query: lastQuery, stateOnly: lastStateOnly)
     }
 
     func toggleSaved(_ job: Job) {
         jobService.toggleSaved(job)
+        applyFilters(query: lastQuery, stateOnly: lastStateOnly)
     }
     
     var allJobs: [Job] {
@@ -111,8 +119,9 @@ class AppViewModel: ObservableObject {
 
     /// one write API for app
     func updateProfile(_ p: Profile) {
-            profile = p
-            saveProfile()
+        profile = p
+        saveProfile()
+        applyFilters(query: lastQuery, stateOnly: lastStateOnly)
     }
     
     private func saveProfile() {
