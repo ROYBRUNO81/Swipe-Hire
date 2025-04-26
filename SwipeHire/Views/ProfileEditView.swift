@@ -21,6 +21,8 @@ struct ProfileEditView: View {
     @State private var state: String
     @State private var country: String
     @State private var newSkillText: String = ""
+    @State private var pickedProfileImage: UIImage?
+    @State private var pickedBannerImage: UIImage?
     
     
     init(viewModel: AppViewModel) {
@@ -274,6 +276,26 @@ struct ProfileEditView: View {
                     isPresented: $showingAddExperience
                 ) { title, description in
                     editedProfile.addExperience(experience: title, experienceDescription: description)
+                }
+            }
+            .sheet(isPresented: $showingImagePicker) {
+                ImagePicker(sourceType: .photoLibrary,
+                            selectedImage: $pickedProfileImage)
+            }
+            // pick banner photo
+            .sheet(isPresented: $showingBannerPicker) {
+                ImagePicker(sourceType: .photoLibrary,
+                            selectedImage: $pickedBannerImage)
+            }
+            // whenever the user picks, update our editedProfile
+            .onChange(of: pickedProfileImage) { ui in
+                if let img = ui {
+                    editedProfile.editProfileUIImage(img)
+                }
+            }
+            .onChange(of: pickedBannerImage) { ui in
+                if let img = ui {
+                    editedProfile.editBannerUIImage(img)
                 }
             }
             .sheet(isPresented: $showingAddSkill) {

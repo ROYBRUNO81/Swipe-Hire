@@ -1,14 +1,13 @@
 import Foundation
 import SwiftUI
 import CoreLocation
+import UIKit
 
 struct Profile {
     var firstName: String = "John"
     var lastName: String = "Doe"
     var about: String = "Hello World"
     var email: String = "gmail.com"
-    var profileImage: Image = Image(systemName: "person.fill")
-    var bannerImage: Image = Image("banner")
     var skills: [String] = []
     var schools: [String] = ["Upenn"]
     var experiences: [String] = ["Senior Prompt Engineer"]
@@ -17,6 +16,34 @@ struct Profile {
     var state: String = ""
     var country: String = ""
     
+    var profileImageData: Data? = nil
+    var bannerImageData:  Data? = nil
+    
+    // MARK: – Computed UIImages
+    var profileUIImage: UIImage? {
+        get { profileImageData.flatMap(UIImage.init(data:)) }
+        set { profileImageData = newValue?.jpegData(compressionQuality: 0.8) }
+    }
+    var bannerUIImage: UIImage? {
+        get { bannerImageData.flatMap(UIImage.init(data:)) }
+        set { bannerImageData = newValue?.jpegData(compressionQuality: 0.8) }
+    }
+    
+    var profileImage: Image {
+        if let ui = profileUIImage {
+            return Image(uiImage: ui).resizable()
+        } else {
+            return Image(systemName: "person.fill").resizable()
+        }
+    }
+    var bannerImage: Image {
+        if let ui = bannerUIImage {
+            return Image(uiImage: ui).resizable()
+        } else {
+            return Image("banner").resizable()
+        }
+    }
+
     mutating func addSkill(_ skill: String) {
         skills.append(skill)
     }
@@ -56,13 +83,8 @@ struct Profile {
         self.email = email
     }
     
-    mutating func editImage(_ image: Image){
-        profileImage = image
-    }
-    
-    mutating func editBannerImage(_ image: Image){
-        bannerImage = image
-    }
+    mutating func editProfileUIImage(_ image: UIImage) { profileUIImage = image }
+    mutating func editBannerUIImage(_ image: UIImage)  { bannerUIImage  = image }
     
 
 }
@@ -71,8 +93,9 @@ extension Profile: Codable {
 
     enum CodingKeys: String, CodingKey {
         case firstName, lastName, about, email, skills,
-             schools, experiences, experienceDescriptions
-        case city, state, country
+             schools, experiences, experienceDescriptions,
+             city, state, country,
+             profileImageData, bannerImageData
     }
 
     init(from decoder: Decoder) throws {
@@ -90,14 +113,15 @@ extension Profile: Codable {
         experienceDescriptions = try c.decode([String].self , forKey: .experienceDescriptions)
 
         // images
-        profileImage = Image(systemName: "person.fill")
-        bannerImage  = Image("banner")
         skills     = try c.decodeIfPresent([String].self, forKey: .skills) ?? []
         
         // location
         city    = try c.decodeIfPresent(String.self, forKey: .city) ?? ""
         state   = try c.decodeIfPresent(String.self, forKey: .state) ?? ""
         country = try c.decodeIfPresent(String.self, forKey: .country) ?? ""
+        
+        profileImageData = try c.decodeIfPresent(Data.self, forKey: .profileImageData)
+        bannerImageData  = try c.decodeIfPresent(Data.self, forKey: .bannerImageData)
     }
 
     func encode(to encoder: Encoder) throws {
@@ -116,5 +140,8 @@ extension Profile: Codable {
         try c.encode(city,    forKey: .city)
         try c.encode(state,   forKey: .state)
         try c.encode(country, forKey: .country)
+        
+        try c.encodeIfPresent(profileImageData, forKey: .profileImageData)
+        try c.encodeIfPresent(bannerImageData , forKey: .bannerImageData)
     }
 }
