@@ -3,11 +3,10 @@ import SwiftUI
 /// Full-screen detail page for a single Job.
 struct JobDetailView: View {
     @Environment(\.dismiss) private var dismiss
-    @ObservedObject var viewModel: AppViewModel
+    @EnvironmentObject var viewModel: AppViewModel
     @State private var job: Job
     
     init(viewModel: AppViewModel, job: Job) {
-        self.viewModel = viewModel
         _job = State(initialValue: job)
     }
 
@@ -51,16 +50,18 @@ struct JobDetailView: View {
         )
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
+          // only show bookmark if not yet applied
+          if !job.isApplied {
             ToolbarItem(placement: .navigationBarTrailing) {
-                Button {
-                    viewModel.jobService.toggleSaved(job)
-                    job.isSaved.toggle()
-                } label: {
-                    Image(systemName: job.isSaved ? "bookmark.fill"
-                                                  : "bookmark")
-                        .foregroundColor(.yellow)
-                }
+              Button {
+                viewModel.toggleSaved(job)
+                job.isSaved.toggle()
+              } label: {
+                Image(systemName: job.isSaved ? "bookmark.fill" : "bookmark")
+                  .foregroundColor(.yellow)
+              }
             }
+          }
         }
     }
 

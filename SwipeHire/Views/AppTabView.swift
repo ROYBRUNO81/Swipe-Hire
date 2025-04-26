@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct AppTabView: View {
-    var viewModel = AppViewModel()
+    @EnvironmentObject var viewModel: AppViewModel
     init() {
             let appearance = UITabBarAppearance()
         
@@ -19,7 +19,7 @@ struct AppTabView: View {
     var body: some View {
         TabView {
             Tab("Profile", systemImage: "person.crop.circle.fill") {
-                ProfileView(viewModel: viewModel)
+                ProfileView(viewModel: _viewModel)
                     .onAppear {
                               // ensure the location request fires
                               viewModel.locationManager.requestLocationIfNeeded(currentCity: viewModel.profile.city)
@@ -28,12 +28,12 @@ struct AppTabView: View {
 
 
             Tab("Home", systemImage: "house.fill") {
-                HomeView(viewModel: viewModel)
+                HomeView(viewModel: _viewModel)
             }
 
 
             Tab("Saved", systemImage: "tray.full.fill") {
-                SavedJobsView(viewModel: viewModel)
+                SavedJobsView(viewModel: _viewModel)
             }
         }
         .foregroundColor(.white)
@@ -42,6 +42,7 @@ struct AppTabView: View {
 
 #Preview {
     AppTabView()
+        .environmentObject(AppViewModel())
 }
 
 

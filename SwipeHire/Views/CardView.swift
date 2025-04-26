@@ -2,7 +2,7 @@ import SwiftUI
 
 struct CardView: View {
     let job: Job
-    var viewModel = AppViewModel()
+    @EnvironmentObject var viewModel: AppViewModel
 
     // compute fit on-the-fly
     private var fitValue: Float { viewModel.fit(for: job) }
@@ -26,6 +26,11 @@ struct CardView: View {
                     changeColor(for: offset.width)
                 }
                 .onEnded { _ in
+                    // swipe right = save
+                    if offset.width > 150 {
+                      viewModel.save(job)
+                    }
+                    // add left-swipe logic here
                     swipe(for: offset.width)
                     changeColor(for: offset.width)
                 }

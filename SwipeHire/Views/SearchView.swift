@@ -9,7 +9,7 @@ import SwiftUI
 
 /// Search bar and location-filter toggle.
 struct SearchView: View {
-    @ObservedObject var viewModel: AppViewModel
+    @EnvironmentObject var viewModel: AppViewModel
     @State private var query = ""
     @State private var filterStateOnly = false
 

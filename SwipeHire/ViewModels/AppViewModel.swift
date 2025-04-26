@@ -66,6 +66,18 @@ class AppViewModel: ObservableObject {
     }
 
     // Accessors
+    func save(_ job: Job) {
+        jobService.saveJob(job)
+    }
+
+    func apply(_ job: Job) {
+        jobService.applyJob(job)
+    }
+
+    func toggleSaved(_ job: Job) {
+        jobService.toggleSaved(job)
+    }
+    
     var allJobs: [Job] {
         jobService.allJobs
     }

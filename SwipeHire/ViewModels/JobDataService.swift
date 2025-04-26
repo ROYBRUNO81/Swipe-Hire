@@ -37,13 +37,28 @@ class JobDataService: ObservableObject {
         allJobs = MockJobData.sampleJobs
     }
 
-    func isSaved(_ job: Job) -> Bool {
-        savedJobs.contains { $0.id == job.id }
-    }
-
     func saveJob(_ job: Job) {
-        guard !isSaved(job) else { return }
-        savedJobs.append(job)
+        var j = job
+        j.isSaved = true
+        // if already present, update its flags; otherwise append
+        if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
+            savedJobs[idx].isSaved   = true
+            savedJobs[idx].isApplied = j.isApplied
+        } else {
+            savedJobs.append(j)
+        }
+        saveToDisk()
+    }
+    
+    func applyJob(_ job: Job) {
+        var j = job
+        j.isSaved   = true
+        j.isApplied = true
+        if let idx = savedJobs.firstIndex(where: { $0.id == j.id }) {
+            savedJobs[idx] = j
+        } else {
+            savedJobs.append(j)
+        }
         saveToDisk()
     }
 
@@ -54,5 +69,9 @@ class JobDataService: ObservableObject {
 
     func toggleSaved(_ job: Job) {
         isSaved(job) ? unsaveJob(job) : saveJob(job)
+    }
+
+    func isSaved(_ job: Job) -> Bool {
+        savedJobs.contains { $0.id == job.id }
     }
 }

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct HomeView: View {
-    @StateObject var viewModel = AppViewModel()
+    @EnvironmentObject var viewModel: AppViewModel
     @State private var selected: Job?  
 
     var body: some View {
@@ -11,13 +11,17 @@ struct HomeView: View {
                 
                 VStack(spacing: 0) {
                     // Search & filter controls above the cards
-                    SearchView(viewModel: viewModel)
+                    SearchView(viewModel: _viewModel)
                         .padding(.vertical, 12)
                     ZStack {
 
                         // use filteredJobs instead of allJobs
-                        ForEach(viewModel.filteredJobs) { job in
+                        ForEach(
+                          viewModel.filteredJobs
+                            .filter { !$0.isSaved && !$0.isApplied }
+                        ) { job in
                             CardView(job: job)
+                                // keep your dynamic zIndex by fit
                                 .zIndex(Double(viewModel.fit(for: job)))
                                 .onTapGesture {
                                     selected = job

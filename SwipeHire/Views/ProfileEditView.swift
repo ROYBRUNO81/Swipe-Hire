@@ -2,7 +2,7 @@ import SwiftUI
 
 struct ProfileEditView: View {
     @Environment(\.presentationMode) var presentationMode
-    @ObservedObject var viewModel: AppViewModel
+    @EnvironmentObject var viewModel: AppViewModel
     @State private var editedProfile: Profile
     @State private var showingImagePicker = false
     @State private var showingBannerPicker = false
@@ -24,7 +24,6 @@ struct ProfileEditView: View {
     
     
     init(viewModel: AppViewModel) {
-        self.viewModel = viewModel
         _editedProfile = State(initialValue: viewModel.profile)
         _firstName = State(initialValue: viewModel.profile.firstName)
         _lastName = State(initialValue: viewModel.profile.lastName)

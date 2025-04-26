@@ -1,72 +1,97 @@
 import SwiftUI
 
 struct SavedJobsView: View {
-    @ObservedObject var viewModel: AppViewModel
+  @EnvironmentObject var viewModel: AppViewModel
 
-    private var savedJobs: [Job] { viewModel.jobService.savedJobs }
+    private var savedOnly:   [Job] { viewModel.jobService.savedJobs.filter { !$0.isApplied } }
+    private var appliedOnly: [Job] { viewModel.jobService.savedJobs.filter { $0.isApplied } }
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                header
+            ZStack {
+                // ─── Usual gradient background ────────────────────────────
+                LinearGradient(
+                    colors: [
+                        Color(red: 0.05, green: 0.10, blue: 0.20),
+                        Color(red: 0.10, green: 0.15, blue: 0.30)
+                    ],
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .ignoresSafeArea()
 
-                LazyVStack(spacing: 16) {
-                    ForEach(savedJobs) { job in
-                        NavigationLink {
-                            JobDetailView(viewModel: viewModel, job: job)
-                        } label: {
-                            SavedJobCard(job: job, viewModel: viewModel)
-                        }
+                // ─── If there are no saved/applied jobs, just show background (optionally placeholder) ───
+                if savedOnly.isEmpty && appliedOnly.isEmpty {
+                    VStack {
+                        Image(systemName: "bookmark.slash")
+                            .font(.largeTitle)
+                            .foregroundColor(.white.opacity(0.5))
+                            .padding(.bottom, 8)
+                        Text("No saved or applied jobs")
+                            .font(.headline)
+                            .foregroundColor(.white.opacity(0.7))
                     }
                 }
-                .padding(.horizontal)
+                // ─── Otherwise render your Saved & Applied sections ────────────────────────────────────
+                else {
+                    ScrollView {
+                        VStack(spacing: 24) {
+                            // Saved Jobs
+                            if !savedOnly.isEmpty {
+                                Text("Saved Jobs")
+                                    .font(.largeTitle).bold()
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+
+                                LazyVStack(spacing: 16) {
+                                    ForEach(savedOnly) { job in
+                                        HStack {
+                                            NavigationLink {
+                                                JobDetailView(viewModel: viewModel, job: job)
+                                            } label: {
+                                                SavedJobCard(job: job, viewModel: viewModel)
+                                            }
+                                            Spacer()
+                                            Button {
+                                                viewModel.toggleSaved(job)
+                                            } label: {
+                                                Image(systemName: "bookmark.fill")
+                                                    .foregroundColor(.yellow)
+                                            }
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+
+                            // Applied Jobs
+                            if !appliedOnly.isEmpty {
+                                Text("Applied Jobs")
+                                    .font(.largeTitle).bold()
+                                    .foregroundColor(.white)
+                                    .padding(.horizontal)
+
+                                LazyVStack(spacing: 16) {
+                                    ForEach(appliedOnly) { job in
+                                        NavigationLink {
+                                            JobDetailView(viewModel: viewModel, job: job)
+                                        } label: {
+                                            SavedJobCard(job: job, viewModel: viewModel)
+                                        }
+                                        .padding(.horizontal)
+                                    }
+                                }
+                            }
+                        }
+                        .padding(.vertical, 20)
+                    }
+                }
             }
-            .background(background)
             .navigationBarHidden(true)
         }
     }
-
-    private var header: some View {
-        VStack {
-            Text("Saved Jobs")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding(.top, 20)
-
-            Text("\(savedJobs.count) opportunities")
-                .font(.subheadline)
-                .foregroundColor(.gray)
-                .padding(.bottom, 10)
-        }
-        .frame(maxWidth: .infinity)
-        .padding(.vertical, 20)
-        .background(headerGradient)
-    }
-
-    private var background: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.05, green: 0.10, blue: 0.20),
-                Color(red: 0.10, green: 0.15, blue: 0.30)
-            ],
-            startPoint: .topLeading,
-            endPoint:   .bottomTrailing
-        )
-        .ignoresSafeArea()
-    }
-
-    private var headerGradient: some View {
-        LinearGradient(
-            colors: [
-                Color(red: 0.10, green: 0.15, blue: 0.30),
-                Color(red: 0.05, green: 0.10, blue: 0.20)
-            ],
-            startPoint: .topLeading,
-            endPoint:   .bottomTrailing
-        )
-    }
 }
+
 
 struct SavedJobCard: View {
     let job: Job
