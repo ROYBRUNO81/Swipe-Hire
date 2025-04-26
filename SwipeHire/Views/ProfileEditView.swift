@@ -288,13 +288,13 @@ struct ProfileEditView: View {
                             selectedImage: $pickedBannerImage)
             }
             // whenever the user picks, update our editedProfile
-            .onChange(of: pickedProfileImage) { ui in
-                if let img = ui {
+            .onChange(of: pickedProfileImage) { _ , newImage in
+                if let img = newImage {
                     editedProfile.editProfileUIImage(img)
                 }
             }
-            .onChange(of: pickedBannerImage) { ui in
-                if let img = ui {
+            .onChange(of: pickedBannerImage) { _ , newBanner in
+                if let img = newBanner {
                     editedProfile.editBannerUIImage(img)
                 }
             }
