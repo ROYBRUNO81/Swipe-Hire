@@ -35,10 +35,9 @@ class JobDataService: ObservableObject {
 
         // populate home feed with mock job data (for now)
         allJobs = MockJobData.sampleJobs
-        
         for saved in savedJobs {
             if let idx = allJobs.firstIndex(where: { $0.id == saved.id }) {
-                allJobs[idx].isSaved   = saved.isSaved   
+                allJobs[idx].isSaved   = saved.isSaved
                 allJobs[idx].isApplied = saved.isApplied
             }
         }

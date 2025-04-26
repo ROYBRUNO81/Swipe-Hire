@@ -43,22 +43,26 @@ class AppViewModel: ObservableObject {
     func applyFilters(query: String, stateOnly: Bool) {
         lastQuery     = query
         lastStateOnly = stateOnly
-        let user = profile
+        let user = profile 
         // first filter by location
         let byLocation: [Job]
         if stateOnly {
-            byLocation = jobService.allJobs.filter { $0.state   == user.state }
+            byLocation = jobService.allJobs.filter { $0.state.lowercased()   == user.state.lowercased() }
         } else {
-            byLocation = jobService.allJobs.filter { $0.country == user.country }
+            byLocation = jobService.allJobs.filter { $0.country.lowercased() == user.country.lowercased() }
         }
 
         // then filter by search query on job.name
+        let afterSearch: [Job]
         if query.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-            filteredJobs = byLocation
+            afterSearch = byLocation
         } else {
             let lower = query.lowercased()
-            filteredJobs = byLocation.filter { $0.name.lowercased().contains(lower) }
+            afterSearch = byLocation.filter { $0.name.lowercased().contains(lower) }
         }
+        
+        // drop any saved or applied jobs
+        filteredJobs = afterSearch.filter { !($0.isSaved || $0.isApplied) }
     }
     
     // Returns the fraction of this job’s skills that the user has.

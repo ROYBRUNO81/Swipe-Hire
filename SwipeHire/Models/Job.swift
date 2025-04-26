@@ -4,7 +4,11 @@ import Foundation
 struct Job: Identifiable, Codable, Hashable, Equatable {
 
     // MARK: – Identity
-    let id: Foundation.UUID = .init()
+    var id: String {
+        [name.lowercased(), company.lowercased(), city.lowercased(), state.lowercased()]
+                .map { $0.trimmingCharacters(in: .whitespaces) }
+                .joined(separator: "|")
+    }
 
     // MARK: – Display fields
     let name:        String
@@ -24,7 +28,7 @@ struct Job: Identifiable, Codable, Hashable, Equatable {
 
     // MARK: – CodingKeys (explicit → compiler never guesses)
     private enum CodingKeys: String, CodingKey {
-        case id, name, description, company,
+        case name, description, company,
              imageName, datePosted, deadline,
              skills, isSaved, isApplied, city, state, country
     }
