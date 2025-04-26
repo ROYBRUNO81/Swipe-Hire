@@ -13,7 +13,6 @@ struct Job: Identifiable, Codable, Hashable, Equatable {
     let imageName:   String
     let datePosted:  Foundation.Date
     let deadline:    Foundation.Date
-    let fit:         Float
     let skills:      [String]
     let city: String
     let state: String
@@ -27,6 +26,6 @@ struct Job: Identifiable, Codable, Hashable, Equatable {
     private enum CodingKeys: String, CodingKey {
         case id, name, description, company,
              imageName, datePosted, deadline,
-             fit, skills, isSaved, isApplied, city, state, country
+             skills, isSaved, isApplied, city, state, country
     }
 }

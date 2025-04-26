@@ -2,6 +2,10 @@ import SwiftUI
 
 struct CardView: View {
     let job: Job
+    var viewModel = AppViewModel()
+
+    // compute fit on-the-fly
+    private var fitValue: Float { viewModel.fit(for: job) }
 
     // swipe animation state
     @State private var offset = CGSize.zero
@@ -99,16 +103,15 @@ struct CardView: View {
                 .font(.system(size: 16, weight: .semibold))
                 .foregroundColor(.white.opacity(0.8))
 
-            HStack(spacing: 12) {
-                ForEach(job.skills, id: \.self) { symbol in
-                    Image(systemName: symbol)
-                        .font(.system(size: 20))
+            FlowLayout(spacing: 8) {
+                ForEach(job.skills, id: \.self) { skill in
+                    Text(skill)
+                        .font(.system(size: 14))
                         .foregroundColor(.white)
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.white.opacity(0.15))
-                        )
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 12)
+                        .background(Color.white.opacity(0.15))
+                        .cornerRadius(8)
                 }
             }
         }
@@ -135,14 +138,14 @@ struct CardView: View {
                             .frame(height: 10)
 
                         Capsule()
-                            .fill(fitColor(for: job.fit))
-                            .frame(width: geo.size.width * CGFloat(job.fit),
+                            .fill(fitColor(for: fitValue))
+                            .frame(width: geo.size.width * CGFloat(fitValue),
                                    height: 10)
                     }
                 }
                 .frame(height: 10)
 
-                Text("\(Int(job.fit * 100))%")
+                Text("\(Int(fitValue * 100))%")
                     .font(.system(size: 16, weight: .bold))
                     .foregroundColor(.white)
             }
@@ -220,8 +223,7 @@ struct DateInfoRow: View {
         imageName:   "iphone",
         datePosted:  Date(),
         deadline:    Calendar.current.date(byAdding: .day, value: 14, to: Date())!,
-        fit:         0.75,
-        skills:      ["swift", "hammer.fill", "rectangle.3.offgrid.bubble.left"],
+        skills:      ["swift", "Java"],
         city: "Pittsburgh",
         state: "Pennsylvania",
         country: "United States"

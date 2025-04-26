@@ -92,16 +92,15 @@ struct JobDetailView: View {
                 .font(.headline)
                 .foregroundColor(.white.opacity(0.8))
 
-            HStack(spacing: 12) {
-                ForEach(job.skills, id: \.self) { symbol in
-                    Image(systemName: symbol)
-                        .font(.title3)
+            FlowLayout(spacing: 8) {
+                ForEach(job.skills, id: \.self) { skill in
+                    Text(skill)
+                        .font(.body)
                         .foregroundColor(.white)
-                        .padding(8)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .fill(Color.white.opacity(0.15))
-                        )
+                        .padding(.vertical, 6)
+                        .padding(.horizontal, 12)
+                        .background(Color.white.opacity(0.15))
+                        .cornerRadius(8)
                 }
             }
         }
@@ -117,7 +116,9 @@ struct JobDetailView: View {
 
     // ───────────────────────────────────────────────────────── match
     private var matchSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
+        let f = viewModel.fit(for: job)
+        
+        return VStack(alignment: .leading, spacing: 8) {
             Text("Match")
                 .font(.headline)
                 .foregroundColor(.white.opacity(0.8))
@@ -129,14 +130,14 @@ struct JobDetailView: View {
                             .fill(Color.white.opacity(0.3))
                             .frame(height: 10)
                         Capsule()
-                            .fill(fitColor(for: job.fit))
-                            .frame(width: geo.size.width * CGFloat(job.fit),
+                            .fill(fitColor(for: f))
+                            .frame(width: geo.size.width * CGFloat(f),
                                    height: 10)
                     }
                 }
                 .frame(height: 10)
 
-                Text("\(Int(job.fit * 100))%")
+                Text("\(Int(f * 100))%")
                     .fontWeight(.bold)
                     .foregroundColor(.white)
             }
@@ -183,8 +184,7 @@ struct JobDetailView: View {
                 imageName:   "iphone",
                 datePosted:  Date(),
                 deadline:    Calendar.current.date(byAdding: .day, value: 14, to: Date())!,
-                fit:         0.8,
-                skills:      ["swift", "hammer.fill", "rectangle.3.offgrid.bubble.left"],
+                skills:      ["swift", "CSS", "Java"],
                 city: "Pittsburgh",
                 state: "Pennsylvania",
                 country: "United States"

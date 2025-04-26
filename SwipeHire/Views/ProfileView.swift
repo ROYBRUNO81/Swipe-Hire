@@ -112,42 +112,22 @@ struct ProfileView: View {
                                 .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
-                        
                    
                         if !viewModel.profile.skills.isEmpty {
                             ProfileCardView(title: "Skills") {
-                                ScrollView(.horizontal, showsIndicators: false) {
-                                    HStack(spacing: 16) {
-                                        ForEach(0..<viewModel.profile.skills.count, id: \.self) { index in
-                                            VStack {
-                                                viewModel.profile.skills[index]
-                                                    .resizable()
-                                                    .scaledToFit()
-                                                    .frame(width: 32, height: 32)
-                                                    .foregroundColor(.white)  // Ensure visibility
-                                                    .padding(10)
-                                                    .background(
-                                                        Circle()
-                                                            .fill(
-                                                                LinearGradient(
-                                                                    gradient: Gradient(colors: [
-                                                                        Color(red: 0.1, green: 0.2, blue: 0.4),
-                                                                        Color(red: 0.1, green: 0.15, blue: 0.3)
-                                                                    ]),
-                                                                    startPoint: .topLeading,
-                                                                    endPoint: .bottomTrailing
-                                                                )
-                                                            )
-                                                    )
-                                                    .overlay(
-                                                        Circle()
-                                                            .stroke(Color.blue.opacity(0.5), lineWidth: 1)
-                                                    )
-                                            }
-                                        }
+                                FlowLayout(spacing: 8) {
+                                    ForEach(viewModel.profile.skills, id: \.self) { skill in
+                                        Text(skill)
+                                            .font(.subheadline)
+                                            .foregroundColor(.white)
+                                            .padding(.vertical, 6)
+                                            .padding(.horizontal, 12)
+                                            .background(Color.blue.opacity(0.2))
+                                            .cornerRadius(12)
                                     }
-                                    .padding(.horizontal, 4)
                                 }
+                                .padding(.horizontal, 4)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
                         }
                         
@@ -218,6 +198,25 @@ struct ProfileView: View {
     }
 }
 
+// FlowLayout for wrapping skill tags
+struct FlowLayout<Content: View>: View {
+    let spacing: CGFloat
+    let content: () -> Content
+
+    init(spacing: CGFloat = 8, @ViewBuilder content: @escaping () -> Content) {
+        self.spacing = spacing
+        self.content = content
+    }
+
+    var body: some View {
+        LazyVGrid(
+            columns: [GridItem(.adaptive(minimum: 80), spacing: spacing)],
+            spacing: spacing
+        ) {
+            content()
+        }
+    }
+}
 
 struct ProfileCardView<Content: View>: View {
     let title: String

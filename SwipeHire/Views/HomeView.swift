@@ -18,7 +18,7 @@ struct HomeView: View {
                         // use filteredJobs instead of allJobs
                         ForEach(viewModel.filteredJobs) { job in
                             CardView(job: job)
-                                .zIndex(Double(job.fit))
+                                .zIndex(Double(viewModel.fit(for: job)))
                                 .onTapGesture {
                                     selected = job
                                 }

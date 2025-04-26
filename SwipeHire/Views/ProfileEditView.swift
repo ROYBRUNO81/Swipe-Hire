@@ -20,13 +20,8 @@ struct ProfileEditView: View {
     @State private var city: String
     @State private var state: String
     @State private var country: String
+    @State private var newSkillText: String = ""
     
-    // Available skill icons
-    let skillIcons = [
-        "swift", "keyboard", "network", "laptopcomputer",
-        "server.rack", "chart.bar", "paintbrush", "camera",
-        "doc.text", "hammer", "wrench.and.screwdriver", "books.vertical"
-    ]
     
     init(viewModel: AppViewModel) {
         self.viewModel = viewModel
@@ -153,45 +148,20 @@ struct ProfileEditView: View {
 
                     EditSectionView(title: "Skills") {
                         VStack(spacing: 16) {
-                            if !editedProfile.skills.isEmpty {
-                                VStack(spacing: 12) {
-                                    Text("Current Skills")
+                            // Current skills as pills
+                            FlowLayout(spacing: 8) {
+                                ForEach(editedProfile.skills, id: \.self) { skill in
+                                    Text(skill)
                                         .font(.subheadline)
-                                        .foregroundColor(.gray)
-                                        .frame(maxWidth: .infinity, alignment: .leading)
-                                    
-                                    ScrollView(.horizontal, showsIndicators: false) {
-                                        HStack(spacing: 16) {
-                                            ForEach(0..<editedProfile.skills.count, id: \.self) { index in
-                                                VStack {
-                                                    editedProfile.skills[index]
-                                                        .resizable()
-                                                        .scaledToFit()
-                                                        .frame(width: 40, height: 40)
-                                                        .padding(8)
-                                                        .background(
-                                                            Circle()
-                                                                .fill(Color(red: 0.1, green: 0.15, blue: 0.3))
-                                                        )
-                                                        .overlay(
-                                                            Circle()
-                                                                .stroke(Color.blue.opacity(0.5), lineWidth: 1)
-                                                        )
-                                                    
-                                                    Button(action: {
-                                                        editedProfile.removeSkill(at: index)
-                                                    }) {
-                                                        Image(systemName: "minus.circle.fill")
-                                                            .foregroundColor(.red)
-                                                            .font(.caption)
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
+                                        .foregroundColor(.white)
+                                        .padding(.vertical, 6)
+                                        .padding(.horizontal, 12)
+                                        .background(Color.blue.opacity(0.3))
+                                        .cornerRadius(12)
                                 }
                             }
-                            
+
+                            // Button to open the sheet
                             Button(action: {
                                 showingAddSkill = true
                             }) {
@@ -204,7 +174,7 @@ struct ProfileEditView: View {
                             }
                         }
                     }
-
+                    
                     EditSectionView(title: "Experience") {
                         VStack(spacing: 16) {
                             ForEach(0..<editedProfile.experiences.count, id: \.self) { index in
@@ -303,10 +273,65 @@ struct ProfileEditView: View {
                 }
             }
             .sheet(isPresented: $showingAddSkill) {
-                AddSkillView(selectedIcon: $selectedSkillIcon, isPresented: $showingAddSkill, skillIcons: skillIcons) { iconName in
-                    editedProfile.addSkill(Image(systemName: iconName))
+                NavigationView {
+                    ZStack {
+                        LinearGradient(
+                            gradient: Gradient(colors: [
+                                Color(red: 0.05, green: 0.1, blue: 0.2),
+                                Color(red: 0.1, green: 0.15, blue: 0.3)
+                            ]),
+                            startPoint: .topLeading,
+                            endPoint: .bottomTrailing
+                        )
+                        .ignoresSafeArea()
+
+                        VStack(spacing: 16) {
+                            // 1. Existing skill pills
+                            FlowLayout(spacing: 8) {
+                                ForEach(editedProfile.skills, id: \.self) { skill in
+                                    Text(skill)
+                                        .font(.subheadline)
+                                        .foregroundColor(.white)
+                                        .padding(.vertical, 6)
+                                        .padding(.horizontal, 12)
+                                        .background(Color.blue.opacity(0.3))
+                                        .cornerRadius(12)
+                                }
+                            }
+                            .padding()
+
+                            // 2. Entry + OK to append
+                            HStack {
+                                TextField("Enter a skill", text: $newSkillText)
+                                    .textFieldStyle(.roundedBorder)
+                                    .foregroundColor(.primary)
+
+                                Button("OK") {
+                                    let s = newSkillText
+                                        .trimmingCharacters(in: .whitespacesAndNewlines)
+                                    guard !s.isEmpty else { return }
+                                    editedProfile.skills.append(s)
+                                    newSkillText = ""
+                                }
+                                .buttonStyle(.borderedProminent)
+                            }
+                            .padding(.horizontal)
+
+                            Spacer()
+                        }
+                    }
+                    .navigationTitle("Manage Skills")
+                    .navigationBarItems(
+                        trailing:
+                            Button("Done") {
+                                showingAddSkill = false
+                            }
+                            .foregroundColor(.white)
+                    )
                 }
             }
+
+
         }
     }
 }

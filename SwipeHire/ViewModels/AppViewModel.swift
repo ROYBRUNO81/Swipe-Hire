@@ -36,7 +36,7 @@ class AppViewModel: ObservableObject {
 
     }
     
-    /// Search query + location filter
+    // Search query + location filter
     func applyFilters(query: String, stateOnly: Bool) {
         let user = profile
         // first filter by location
@@ -54,6 +54,15 @@ class AppViewModel: ObservableObject {
             let lower = query.lowercased()
             filteredJobs = byLocation.filter { $0.name.lowercased().contains(lower) }
         }
+    }
+    
+    // Returns the fraction of this job’s skills that the user has.
+    func fit(for job: Job) -> Float {
+        guard !job.skills.isEmpty else { return 0 }
+        let user  = Set(profile.skills)
+        let need  = Set(job.skills)
+        let match = user.intersection(need).count
+        return Float(match) / Float(job.skills.count)
     }
 
     // Accessors

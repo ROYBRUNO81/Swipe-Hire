@@ -15,7 +15,7 @@ struct SavedJobsView: View {
                         NavigationLink {
                             JobDetailView(viewModel: viewModel, job: job)
                         } label: {
-                            SavedJobCard(job: job)
+                            SavedJobCard(job: job, viewModel: viewModel)
                         }
                     }
                 }
@@ -70,6 +70,7 @@ struct SavedJobsView: View {
 
 struct SavedJobCard: View {
     let job: Job
+    @ObservedObject var viewModel: AppViewModel
 
     var body: some View {
         HStack(spacing: 16) {
@@ -97,10 +98,11 @@ struct SavedJobCard: View {
             }
 
             Spacer()
+            let f = viewModel.fit(for: job)
 
             ZStack {
                 Circle()
-                    .trim(from: 0, to: CGFloat(job.fit))
+                    .trim(from: 0, to: CGFloat(f))
                     .stroke(
                         LinearGradient(
                             colors: [.blue, .purple],
@@ -112,7 +114,7 @@ struct SavedJobCard: View {
                     .rotationEffect(.degrees(-90))
                     .frame(width: 50, height: 50)
 
-                Text("\(Int(job.fit * 100))%")
+                Text("\(Int(f * 100))%")
                     .font(.system(size: 14, weight: .bold))
                     .foregroundColor(.white)
             }
