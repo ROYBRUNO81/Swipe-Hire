@@ -13,7 +13,19 @@ struct HomeView: View {
                     // Search & filter controls above the cards
                     SearchView(viewModel: _viewModel)
                         .padding(.vertical, 12)
+                    
                     ZStack {
+                        VStack(spacing: 8) {
+                            Spacer()
+                            Image(systemName: "exclamationmark.magnifyingglass")
+                                   .font(.headline)
+                                   .foregroundColor(.white.opacity(0.7))
+                            Text("No more matches")
+                                   .font(.headline)
+                                   .foregroundColor(.white.opacity(0.7))
+                            Spacer()
+                        }
+                        .allowsHitTesting(false)
 
                         // use filteredJobs instead of allJobs
                         ForEach(
@@ -28,6 +40,7 @@ struct HomeView: View {
                                 }
                         }
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
             .navigationTitle("Your Job Match")
