@@ -2,7 +2,7 @@ import SwiftUI
 
 struct HomeView: View {
     @EnvironmentObject var viewModel: AppViewModel
-    @State private var selected: Job?  
+    @State private var selected: Job?
 
     var body: some View {
         NavigationStack {
@@ -10,6 +10,11 @@ struct HomeView: View {
                 background
                 
                 VStack(spacing: 0) {
+                    Text("Your Job Match")
+                        .font(.largeTitle).bold()
+                        .foregroundColor(.white)
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     // Search & filter controls
                     SearchView(viewModel: _viewModel)
                         .padding(.vertical, 12)
@@ -42,7 +47,6 @@ struct HomeView: View {
                     .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }
-            .navigationTitle("Your Job Match")
             .navigationDestination(item: $selected) { job in
                 JobDetailView(viewModel: viewModel, job: job)
             }
